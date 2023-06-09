@@ -1,21 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import MovieList from '../components/Cardfilms';
 import SearchBar from '../components/Searchbar';
-
+import MovieDetails from '../components/MovieDetails';
 
 const Home = () => {
+  const [selectedMovie, setSelectedMovie] = useState(null);
+  const [showDetails, setShowDetails] = useState(false);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.texto}>O que deseja assistir?</Text>
-      <SearchBar/>
-      <MovieList/>
-
+      {!showDetails && <Text style={styles.texto}>O que deseja assistir?</Text>}
+      {!showDetails && <SearchBar />}
+      {showDetails ? (
+        <MovieDetails movie={selectedMovie} handleGoBack={() => setShowDetails(false)} />
+      ) : (
+        <MovieList setSelectedMovie={setSelectedMovie} setShowDetails={setShowDetails} />
+      )}
     </View>
   );
 };
-
-export default Home;
 
 const styles = StyleSheet.create({
   container: {
@@ -31,3 +35,5 @@ const styles = StyleSheet.create({
     color: 'white',
   },
 });
+
+export default Home;
