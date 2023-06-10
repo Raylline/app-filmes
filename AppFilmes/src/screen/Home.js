@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import MovieList from '../components/Cardfilms';
 import SearchBar from '../components/Searchbar';
-import MovieDetails from '../components/MovieDetails';
+import MovieDetails from '../screen/MovieDetails';
 
 const Home = () => {
   const [selectedMovie, setSelectedMovie] = useState(null);

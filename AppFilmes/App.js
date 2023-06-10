@@ -6,8 +6,8 @@ import Home from './src/screen/Home';
 export default function App() {
   return (
     <>
-      <StatusBar style="auto" />
       <NavigationContainer>
+        <StatusBar style="auto" />
         <Home />
       </NavigationContainer>
     </>

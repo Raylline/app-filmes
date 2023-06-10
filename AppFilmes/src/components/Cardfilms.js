@@ -24,7 +24,7 @@ const MovieList = ({ setSelectedMovie, setShowDetails }) => {
   }, []);
 
   const fetchMovies = async () => {
-    const apiKey = '8a78bbc2059ae1af9b5db720e9ee991d'; // Substitua pela sua chave de API do TMDB
+    const apiKey = '8a78bbc2059ae1af9b5db720e9ee991d';
 
     try {
       setIsLoading(true);
