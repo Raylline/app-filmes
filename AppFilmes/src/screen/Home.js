@@ -8,6 +8,8 @@ import SeriesDetails from './SeriesDetails';
 import MovieList from '../components/Cardfilms';
 import SeriesList from '../components/Cardseries';
 import Menu from '../components/Menu';
+import Results from './Results';
+
 
 const Home = () => {
   const [selectedMovie, setSelectedMovie] = useState(null);
@@ -15,6 +17,8 @@ const Home = () => {
   const [showDetails, setShowDetails] = useState(false);
   const [showMovieList, setShowMovieList] = useState(false);
   const [showSeriesList, setShowSeriesList] = useState(false);
+  const [searchResults, setSearchResults] = useState([]);
+  const [showResults, setShowResults] = useState(false); // Variável de estado para exibir os resultados da pesquisa
 
   const handleGoBack = () => {
     setSelectedMovie(null);
@@ -31,28 +35,42 @@ const Home = () => {
       setSelectedSeries(null);
       setShowMovieList(true);
       setShowSeriesList(false);
+      setShowResults(false); // Oculta os resultados da pesquisa ao selecionar "Filmes" no menu
     } else if (screen === 'serieslist') {
       setShowDetails(false);
       setSelectedMovie(null);
       setSelectedSeries(null);
       setShowMovieList(false);
       setShowSeriesList(true);
+      setShowResults(false); // Oculta os resultados da pesquisa ao selecionar "Séries" no menu
     } else {
       setShowDetails(false);
       setSelectedMovie(null);
       setSelectedSeries(null);
       setShowMovieList(false);
       setShowSeriesList(false);
+      setShowResults(false); // Oculta os resultados da pesquisa ao selecionar qualquer outra opção no menu
     }
+  };
+  const handleSearch = (query) => {
+    fetch(
+      `https://api.themoviedb.org/3/search/multi?query=${query}&api_key=8a78bbc2059ae1af9b5db720e9ee991d`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setSearchResults(data.results);
+        setShowResults(true);
+      })
+      .catch((error) => console.log(error));
   };
 
   return (
     <View style={styles.container}>
       <Menu handleMenuPress={handleMenuPress} />
-      {!showDetails && !showMovieList && !showSeriesList && (
+      {!showDetails && !showMovieList && !showSeriesList && !showResults && (
         <>
           <Text style={styles.texto}>O que deseja assistir?</Text>
-          <SearchBar />
+          <SearchBar handleSearch={handleSearch} />
           <MovieSlide setSelectedMovie={setSelectedMovie} setShowDetails={setShowDetails} />
           <SeriesSlide setSelectedSeries={setSelectedSeries} setShowDetails={setShowDetails} />
         </>
@@ -66,14 +84,19 @@ const Home = () => {
           )}
         </>
       )}
-      {showMovieList && !showDetails && (
+      {showMovieList && !showDetails && !showResults && (
         <View style={styles.movieListContainer}>
           <MovieList setSelectedMovie={setSelectedMovie} setShowDetails={setShowDetails} />
         </View>
       )}
-      {showSeriesList && !showDetails && (
+      {showSeriesList && !showDetails && !showResults && (
         <View style={styles.seriesListContainer}>
           <SeriesList setSelectedSeries={setSelectedSeries} setShowDetails={setShowDetails} />
+        </View>
+      )}
+      {showResults && (
+        <View style={styles.resultsContainer}>
+          <Results results={searchResults} />
         </View>
       )}
     </View>
@@ -98,6 +121,10 @@ const styles = StyleSheet.create({
   },
   seriesListContainer: {
     flex: 1,
+    resultsContainer: {
+      flex: 1,
+      marginTop: 20,
+    },
   },
 });
 
