@@ -6,6 +6,7 @@ import MovieDetails from '../screen/MovieDetails';
 import SeriesSlide from '../components/SeriesSlide';
 import SeriesDetails from './SeriesDetails';
 import MovieList from '../components/Cardfilms';
+import SeriesList from '../components/Cardseries';
 import Menu from '../components/Menu';
 
 const Home = () => {
@@ -13,12 +14,14 @@ const Home = () => {
   const [selectedSeries, setSelectedSeries] = useState(null);
   const [showDetails, setShowDetails] = useState(false);
   const [showMovieList, setShowMovieList] = useState(false);
+  const [showSeriesList, setShowSeriesList] = useState(false);
 
   const handleGoBack = () => {
     setSelectedMovie(null);
     setSelectedSeries(null);
     setShowDetails(false);
     setShowMovieList(false);
+    setShowSeriesList(false);
   };
 
   const handleMenuPress = (screen) => {
@@ -27,18 +30,26 @@ const Home = () => {
       setSelectedMovie(null);
       setSelectedSeries(null);
       setShowMovieList(true);
+      setShowSeriesList(false);
+    } else if (screen === 'serieslist') {
+      setShowDetails(false);
+      setSelectedMovie(null);
+      setSelectedSeries(null);
+      setShowMovieList(false);
+      setShowSeriesList(true);
     } else {
       setShowDetails(false);
       setSelectedMovie(null);
       setSelectedSeries(null);
       setShowMovieList(false);
+      setShowSeriesList(false);
     }
   };
 
   return (
     <View style={styles.container}>
       <Menu handleMenuPress={handleMenuPress} />
-      {!showDetails && !showMovieList && (
+      {!showDetails && !showMovieList && !showSeriesList && (
         <>
           <Text style={styles.texto}>O que deseja assistir?</Text>
           <SearchBar />
@@ -55,9 +66,14 @@ const Home = () => {
           )}
         </>
       )}
-      {showMovieList && (
+      {showMovieList && !showDetails && (
         <View style={styles.movieListContainer}>
-          <MovieList />
+          <MovieList setSelectedMovie={setSelectedMovie} setShowDetails={setShowDetails} />
+        </View>
+      )}
+      {showSeriesList && !showDetails && (
+        <View style={styles.seriesListContainer}>
+          <SeriesList setSelectedSeries={setSelectedSeries} setShowDetails={setShowDetails} />
         </View>
       )}
     </View>
@@ -78,6 +94,9 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   movieListContainer: {
+    flex: 1,
+  },
+  seriesListContainer: {
     flex: 1,
   },
 });

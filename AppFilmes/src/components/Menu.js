@@ -10,7 +10,7 @@ const Menu = ({ handleMenuPress }) => {
       <TouchableOpacity onPress={() => handleMenuPress('movielist')}>
         <Text style={styles.menuItem}>Filmes</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => handleMenuPress('settings')}>
+      <TouchableOpacity onPress={() => handleMenuPress('serieslist')}>
         <Text style={styles.menuItem}>Series</Text>
       </TouchableOpacity>
     </View>
